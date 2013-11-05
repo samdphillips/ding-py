@@ -74,6 +74,12 @@ class Stream(object):
     def from_iterator(cls, it):
         return cls(PendingState(it))
 
+    @classmethod
+    def from_file(cls, filename):
+        f = file(filename, 'r')
+        it = CharIoIterator(f)
+        return cls.from_iterator(it)
+
     def __init__(self, state):
         self._state = state
 
@@ -95,5 +101,19 @@ class Stream(object):
             yield s.first
             s = s.rest
         raise StopIteration
+
+
+class CharIoIterator(object):
+    def __init__(self, io):
+        self._io = io
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        c = self._io.read(1)
+        if c == '':
+            raise StopIteration
+        return c
 
 

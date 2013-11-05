@@ -61,3 +61,17 @@ class IteratorTests(unittest.TestCase):
         self.assertEqual(self.stream.first, 0)
 
 
+class CharIoIteratorTests(unittest.TestCase):
+    def setUp(self):
+        from StringIO import StringIO
+        from ding.util.stream import CharIoIterator
+        sio = StringIO('0123456789')
+        self.cio_iter = CharIoIterator(sio)
+
+    def test_iteration(self):
+        from itertools import izip
+        s = '0123456789'
+        for c1, c2 in izip(self.cio_iter, s):
+            self.assertEqual(c1, c2)
+        
+
