@@ -29,7 +29,7 @@ class BaseGrammar(object):
             return None
         finally:
             self.stream = s
-        raise ParseFail(self.stream)
+        raise ParseFail(s)
 
     def nothing(self):
         return self.not_parse('anything')
