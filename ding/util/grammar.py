@@ -62,13 +62,3 @@ class BaseGrammar(object):
         raise ParseFail(s)
 
 
-class CharGrammar(BaseGrammar):
-    def char(self, c):
-        s = self.stream
-        v = self.anything()
-        if v == c:
-            return v
-        else:
-            raise ParseFail(s)
-
-

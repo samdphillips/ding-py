@@ -30,20 +30,3 @@ class BaseGrammarTests(unittest.TestCase):
         self.assertEqual(1, v)
 
 
-class CharGrammarTests(unittest.TestCase):
-    def setUp(self):
-        from ding.util.stream import Stream
-        from ding.util.grammar import CharGrammar
-        s = Stream.from_iterable("test")
-        self.grammar = CharGrammar(s)
-
-    def test_char(self):
-        self.assertEqual('t', self.grammar.char('t'))
-
-    def test_chars(self):
-        self.assertEqual('t', self.grammar.char('t'))
-        self.assertEqual('e', self.grammar.char('e'))
-        self.assertEqual('s', self.grammar.char('s'))
-        self.assertEqual('t', self.grammar.char('t'))
-
-
