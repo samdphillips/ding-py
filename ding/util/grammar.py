@@ -52,6 +52,15 @@ class BaseGrammar(object):
             self.stream = s
             raise
 
+    def choice(self, *rules):
+        for r in rules:
+            s = self.stream
+            try:
+                return self.apply(r)
+            except ParseFail:
+                self.stream = s
+        raise ParseFail(s)
+
 
 class CharGrammar(BaseGrammar):
     def char(self, c):
