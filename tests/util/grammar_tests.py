@@ -34,7 +34,7 @@ class CharGrammarTests(unittest.TestCase):
     def setUp(self):
         from ding.util.stream import Stream
         from ding.util.grammar import CharGrammar
-        s = Stream.from_iterable("test 1 2 3")
+        s = Stream.from_iterable("test")
         self.grammar = CharGrammar(s)
 
     def test_char(self):
