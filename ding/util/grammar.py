@@ -21,10 +21,10 @@ class BaseGrammar(object):
         m = getattr(self, name)
         return m(*args)
 
-    def not_parse(self, rule):
+    def not_parse(self, rule, *args):
         s = self.stream
         try:
-            v = self.apply(rule)
+            v = self.apply(rule, *args)
         except ParseFail:
             return None
         finally:
@@ -34,11 +34,11 @@ class BaseGrammar(object):
     def nothing(self):
         return self.not_parse('anything')
 
-    def many(self, rule):
+    def many(self, rule, *args):
         ret = []
         while True:
             try:
-                v = self.apply(rule)
+                v = self.apply(rule, *args)
             except ParseFail:
                 return ret
             ret.append(v)
