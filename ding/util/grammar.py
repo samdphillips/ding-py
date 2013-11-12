@@ -17,6 +17,17 @@ class BaseGrammar(object):
         self.stream = self.stream.rest
         return v
 
+    def equal(self, value):
+        s = self.stream
+        if self.stream.is_empty:
+            raise ParseFail(s)
+
+        v = self.stream.first
+        if value == v:
+            self.stream = self.stream.rest
+            return v
+        raise ParseFail(s)
+
     def apply(self, name, *args):
         m = getattr(self, name)
         return m(*args)
@@ -56,7 +67,9 @@ class BaseGrammar(object):
         for r in rules:
             s = self.stream
             try:
-                return self.apply(r)
+                if type(r) != tuple:
+                    r = (r,)
+                return self.apply(*r)
             except ParseFail:
                 self.stream = s
         raise ParseFail(s)
