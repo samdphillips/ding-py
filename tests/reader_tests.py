@@ -16,4 +16,15 @@ class ReaderTests(unittest.TestCase):
         r.line_comment()
         r.nothing()
 
+    def test_block_comment_even(self):
+        from ding.reader import Reader
+        r = Reader.from_string('/*  */')
+        r.block_comment()
+        r.nothing()
+
+    def test_block_comment_odd(self):
+        from ding.reader import Reader
+        r = Reader.from_string('/* */')
+        r.block_comment()
+        r.nothing()
 

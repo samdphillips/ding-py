@@ -30,10 +30,7 @@ class Reader(BaseGrammar):
 
     def not_string(self, s):
         self.not_parse('string', s)
-        r = []
-        for i in xrange(len(s)):
-            r.append(self.anything())
-        return ''.join(r)
+        return self.anything()
 
     def space(self):
         s = self.stream
@@ -49,5 +46,10 @@ class Reader(BaseGrammar):
         self.string('//')
         self.many('not_string', '\n')
         self.char('\n')
+
+    def block_comment(self):
+        self.string('/*')
+        self.many('not_string', '*/')
+        self.string('*/')
 
 
