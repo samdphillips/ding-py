@@ -37,6 +37,13 @@ class BaseGrammar(object):
         self.stream = self.stream.rest
         return v
 
+    def predicate(self, pred):
+        s = self.stream
+        v = self.anything()
+        if pred(v):
+            return v
+        raise ParseFail(s)
+
     def equal(self, value):
         s = self.stream
         if self.stream.is_empty:

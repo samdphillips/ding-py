@@ -43,5 +43,18 @@ class BaseGrammarTests(unittest.TestCase):
                               ('equal', 3),
                               ('equal', 4))
         self.assertEqual([[1], 2, 3, 4], v)
-                                        
+
+    def test_predicate(self):
+        def is_odd(n):
+            return n % 2 == 1
+        v = self.grammar.predicate(is_odd)
+        self.assertEqual(1, v)
+
+    def test_predicate_fail(self):
+        from ding.util.grammar import ParseFail
+        def is_even(n):
+            return n % 2 == 0
+        with self.assertRaises(ParseFail):
+            self.grammar.predicate(is_even)
+
 
