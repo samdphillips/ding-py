@@ -39,3 +39,13 @@ class ReaderTests(unittest.TestCase):
         r = Reader.from_string('  // abcde \n\n\n/* fghi\n * jklm\n */  ')
         r.token_spaces()
         r.nothing()
+
+    def test_identifier(self):
+        from ding.reader import Reader
+        tests = ['id', 'x', 'x1', 'a_variable', '_var']
+        for t in tests:
+            r = Reader.from_string(t)
+            self.assertEqual(t, r.identifier())
+            r.nothing()
+
+

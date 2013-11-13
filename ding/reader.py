@@ -33,6 +33,15 @@ class Reader(BaseGrammar):
             r.append(self.char(c))
         return ''.join(r)
 
+    # XXX: move to BaseGrammar
+    def in_range(self, start_value, end_value):
+        s = self.stream
+        v = self.anything()
+
+        if start_value <= v and v <= end_value:
+            return v
+        raise ParseFail(s)
+
     def not_string(self, s):
         self.not_parse('string', s)
         return self.anything()
@@ -59,6 +68,22 @@ class Reader(BaseGrammar):
         self.string('/*')
         self.many('not_string', '*/')
         self.string('*/')
+
+    def digit(self):
+        return self.in_range('0', '9')
+
+    def id_start_char(self):
+        return self.choice(('in_range', 'a', 'z'),
+                           ('char', '_'))
+
+    def id_char(self):
+        return self.choice('id_start_char',
+                           'digit')
+
+    def identifier(self):
+        i = self.id_start_char()
+        dentifier = self.many_join('id_char')
+        return i + dentifier
 
     def token_space(self):
         self.choice('whitespace', 'line_comment', 'block_comment')
