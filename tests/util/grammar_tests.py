@@ -36,4 +36,12 @@ class BaseGrammarTests(unittest.TestCase):
                                 ('equal', 1))
         self.assertEqual(1, v)
 
+    def test_many_choice_many(self):
+        v = self.grammar.many('choice',
+                              ('many1', 'equal', 1),
+                              ('equal', 2),
+                              ('equal', 3),
+                              ('equal', 4))
+        self.assertEqual([[1], 2, 3, 4], v)
+                                        
 

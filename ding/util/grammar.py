@@ -76,11 +76,11 @@ class BaseGrammar(object):
                 return ret
             ret.append(v)
 
-    def many1(self, rule):
+    def many1(self, rule, *args):
         try:
             s = self.stream
-            v = self.apply(rule)
-            return [v] + self.many(rule)
+            v = self.apply(rule, *args)
+            return [v] + self.many(rule, *args)
         except ParseFail:
             self.stream = s
             raise
