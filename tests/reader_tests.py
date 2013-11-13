@@ -48,4 +48,11 @@ class ReaderTests(unittest.TestCase):
             self.assertEqual(t, r.identifier())
             r.nothing()
 
+    def test_id_tokens(self):
+        from ding.reader import Reader
+        r = Reader.from_string(' a// abe \nb\n\n c /* gh\n * jklm\n */ d ')
+        v = r.many('token', 'identifier')
+        self.assertEqual(['a', 'b', 'c', 'd'], v)
+        r.nothing()
+
 

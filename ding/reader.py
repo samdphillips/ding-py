@@ -91,4 +91,10 @@ class Reader(BaseGrammar):
     def token_spaces(self):
         self.many('token_space')
 
+    def token(self, rule, *args):
+        self.token_spaces()
+        v = self.apply(rule, *args)
+        self.token_spaces()
+        return v
+
 
