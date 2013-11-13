@@ -10,6 +10,12 @@ class ReaderTests(unittest.TestCase):
         self.assertEqual('    ', r.whitespace())
         r.nothing()
 
+    def test_whitespace_takes_just_enough(self):
+        from ding.reader import Reader
+        r = Reader.from_string('    test')
+        r.whitespace()
+        self.assertEqual('t', r.anything())
+
     def test_line_comment(self):
         from ding.reader import Reader
         r = Reader.from_string('// this is a test\n')
@@ -28,3 +34,8 @@ class ReaderTests(unittest.TestCase):
         r.block_comment()
         r.nothing()
 
+    def test_token_space(self):
+        from ding.reader import Reader
+        r = Reader.from_string('  // abcde \n\n\n/* fghi\n * jklm\n */  ')
+        r.token_spaces()
+        r.nothing()

@@ -4,10 +4,30 @@ class ParseFail(Exception):
     def __init__(self, stream):
         self._stream = stream
 
+    def __str__(self):
+        if self._stream.is_empty:
+            return "Got: <EMPTY>"
+        else:
+            return "Got: %s" % `self._stream.first`
+
 
 class BaseGrammar(object):
     def __init__(self, stream):
         self.stream = stream
+
+    def debug(self, tag):
+        if self.stream.is_empty:
+            print tag, '<EMPTY>'
+        else:
+            t = []
+            s = self.stream
+            for i in xrange(10):
+                if s.is_empty:
+                    t.append(' <EMPTY> ')
+                    break
+                t.append(s.first)
+                s = s.rest
+            print tag, `''.join(t)`
 
     def anything(self):
         if self.stream.is_empty:
@@ -49,8 +69,10 @@ class BaseGrammar(object):
         ret = []
         while True:
             try:
+                s = self.stream
                 v = self.apply(rule, *args)
             except ParseFail:
+                self.stream = s
                 return ret
             ret.append(v)
 

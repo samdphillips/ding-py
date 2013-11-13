@@ -11,10 +11,15 @@ class Reader(BaseGrammar):
         return cls(st)
 
     def many_join(self, rule, *args):
-        v = super(Reader, self).many(rule, *args)
+        v = self.many(rule, *args)
+        return ''.join(v)
+
+    def many1_join(self, rule, *args):
+        v = self.many1(rule, *args)
         return ''.join(v)
 
     def char(self, c):
+        self.debug('char')
         s = self.stream
         v = self.anything()
         if v == c:
@@ -38,18 +43,27 @@ class Reader(BaseGrammar):
         if c.isspace():
             return c
         raise ParseFail(s)
-        
+
     def whitespace(self):
-        return self.many_join('space')
+        self.debug('whitespace')
+        return self.many1_join('space')
 
     def line_comment(self):
+        self.debug('line_comment')
         self.string('//')
         self.many('not_string', '\n')
         self.char('\n')
 
     def block_comment(self):
+        self.debug('block_comment')
         self.string('/*')
         self.many('not_string', '*/')
         self.string('*/')
+
+    def token_space(self):
+        self.choice('whitespace', 'line_comment', 'block_comment')
+
+    def token_spaces(self):
+        self.many('token_space')
 
 
