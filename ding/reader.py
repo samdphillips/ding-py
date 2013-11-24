@@ -73,12 +73,10 @@ class Reader(BaseGrammar):
         return self.in_range('0', '9')
 
     def id_start_char(self):
-        return self.choice(('in_range', 'a', 'z'),
-                           ('char', '_'))
+        return self.choice(('in_range', 'a', 'z'), ('char', '_'))
 
     def id_char(self):
-        return self.choice('id_start_char',
-                           'digit')
+        return self.choice('id_start_char', 'digit')
 
     def identifier(self):
         i = self.id_start_char()
