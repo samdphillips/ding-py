@@ -1,5 +1,6 @@
 
 
+from ding.term         import CompoundTerm
 from ding.util.grammar import BaseGrammar, ParseFail
 from ding.util.stream  import Stream
 
@@ -82,6 +83,25 @@ class Reader(BaseGrammar):
         i = self.id_start_char()
         dentifier = self.many_join('id_char')
         return i + dentifier
+
+    def compound_term_delim(self, start, end):
+        self.char(start)
+        v = self.many('token', 'term')
+        self.char(end)
+        return CompoundTerm(start+end, v)
+
+    def compound_term(self):
+        return self.choice(('compound_term_delim', '{', '}'),
+                           ('compound_term_delim', '[', ']'),
+                           ('compound_term_delim', '(', ')'))
+
+    def delimiter_term(self):
+        return self.choice(('char', ','), ('char', ';'))
+
+    def term(self):
+        return self.choice('compound_term',
+                           'delimiter_term',
+                           'identifier')
 
     def token_space(self):
         self.choice('whitespace', 'line_comment', 'block_comment')

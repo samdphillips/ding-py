@@ -55,4 +55,26 @@ class ReaderTests(unittest.TestCase):
         self.assertEqual(['a', 'b', 'c', 'd'], v)
         r.nothing()
 
+    def test_compound_term(self):
+        from ding.reader import Reader
+        r = Reader.from_string('{ a b c d e }')
+        v = r.token('compound_term')
+        self.assertEqual('{}', v.shape)
+        self.assertEqual(['a','b','c','d','e'], v.terms)
+        r.nothing()
+
+    def test_comma_term(self):
+        from ding.reader import Reader
+        r = Reader.from_string('a, b, c')
+        v = r.many('token', 'term')
+        self.assertEqual(['a',',','b',',','c'], v)
+        r.nothing()
+
+    def test_semicolon_term(self):
+        from ding.reader import Reader
+        r = Reader.from_string('a ; b ; c')
+        v = r.many('token', 'term')
+        self.assertEqual(['a',';','b',';','c'], v)
+        r.nothing()
+
 
