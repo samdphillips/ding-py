@@ -84,6 +84,18 @@ class Reader(BaseGrammar):
         dentifier = self.many_join('id_char')
         return i + dentifier
 
+    def operator_char(self):
+        op_chars = '~!@#$%^&*-+==<>./?:|'
+        s = self.stream
+        v = self.anything()
+
+        if v in op_chars:
+            return v
+        raise ParseFail(s)
+
+    def operator_identifier(self):
+        return self.many1_join('operator_char')
+
     def compound_term_delim(self, start, end):
         self.char(start)
         v = self.many('token', 'term')

@@ -55,6 +55,15 @@ class ReaderTests(unittest.TestCase):
         self.assertEqual(['a', 'b', 'c', 'd'], v)
         r.nothing()
 
+    def test_operator_identifiers(self):
+        from ding.reader import Reader
+        r = Reader.from_string('+ - = ++ / * == += -= := ? : <=>')
+        v = ['+', '-', '=', '++', '/', '*', '==', '+=', '-=',
+                ':=', '?', ':', '<=>']
+        for x in v:
+            self.assertEqual(x, r.token('operator_identifier'))
+        r.nothing()
+
     def test_compound_term(self):
         from ding.reader import Reader
         r = Reader.from_string('{ a b c d e }')
