@@ -73,5 +73,29 @@ class CharIoIteratorTests(unittest.TestCase):
         s = '0123456789'
         for c1, c2 in izip(self.cio_iter, s):
             self.assertEqual(c1, c2)
-        
+
+
+class PositionPropertyTests(unittest.TestCase):
+    def test_regular_characters(self):
+        from ding.util.stream import PositionPropertyUpdater
+        s = 'abcde'
+        ppu = PositionPropertyUpdater()
+        for c in s:
+            p = ppu.update(c)
+
+        self.assertEqual(p['offset'], 5)
+        self.assertEqual(p['line'],   1)
+        self.assertEqual(p['column'], 5)
+
+    def test_newlines(self):
+        from ding.util.stream import PositionPropertyUpdater
+        s = '\n\n\n'
+        ppu = PositionPropertyUpdater()
+        for c in s:
+            p = ppu.update(c)
+
+        self.assertEqual(p['offset'], 3)
+        self.assertEqual(p['line'],   3)
+        self.assertEqual(p['column'], 0)
+
 
