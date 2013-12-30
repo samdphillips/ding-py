@@ -2,8 +2,12 @@
 
 
 import logging
+import sys
+
 import nose
 import nose.plugins.logcapture
+
+from nose.core import TextTestRunner
 
 
 # stuff to disable builtin logcapture
@@ -32,6 +36,7 @@ class LogCapture(nose.plugins.logcapture.LogCapture):
         super(LogCapture, self).beforeTest(test)
 
 
-nose.main(addplugins=[LogCapture()])
+nose.main(testRunner=TextTestRunner(sys.stdout),
+          addplugins=[LogCapture()])
 
 
