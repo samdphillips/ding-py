@@ -36,7 +36,6 @@ class LogCapture(nose.plugins.logcapture.LogCapture):
         super(LogCapture, self).beforeTest(test)
 
 
-nose.main(testRunner=TextTestRunner(sys.stdout),
-          addplugins=[LogCapture()])
+nose.main(addplugins=[LogCapture()])
 
 
