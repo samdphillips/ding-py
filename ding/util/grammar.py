@@ -65,6 +65,15 @@ class BaseGrammar(object):
             return v
         raise ParseFail(s)
 
+    def in_range(self, start_value, end_value):
+        self.debug('in_range', '%s -> %s', `start_value`, `end_value`)
+        s = self.stream
+        v = self.anything()
+
+        if start_value <= v and v <= end_value:
+            return v
+        raise ParseFail(s)
+
     def apply(self, name, *args):
         m = getattr(self, name)
         return m(*args)

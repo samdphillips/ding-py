@@ -42,16 +42,6 @@ class Reader(BaseGrammar):
             r.append(self.char(c))
         return ''.join(r)
 
-    # XXX: move to BaseGrammar
-    def in_range(self, start_value, end_value):
-        self.debug('in_range', '%s -> %s', `start_value`, `end_value`)
-        s = self.stream
-        v = self.anything()
-
-        if start_value <= v and v <= end_value:
-            return v
-        raise ParseFail(s)
-
     def not_string(self, s):
         self.debug('not_string', '%s', `s`)
         self.not_parse('string', s)
