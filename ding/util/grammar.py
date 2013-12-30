@@ -69,6 +69,13 @@ class BaseGrammar(object):
         m = getattr(self, name)
         return m(*args)
 
+    def foreign(self, grammar, name, *args):
+        g = grammar(self.stream)
+        m = getattr(g, name)
+        v = m(*args)
+        self.stream = g.stream
+        return v
+
     def not_parse(self, rule, *args):
         s = self.stream
         try:

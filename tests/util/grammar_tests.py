@@ -57,4 +57,27 @@ class BaseGrammarTests(unittest.TestCase):
         with self.assertRaises(ParseFail):
             self.grammar.predicate(is_even)
 
+    def test_foreign_rule_success(self):
+        from ding.util.grammar import BaseGrammar
+        class Foreign(BaseGrammar):
+            def one(self):
+                return self.equal(1)
+
+        v = self.grammar.foreign(Foreign, 'one')
+        self.assertEqual(1, v)
+
+    def test_foreign_rule_success(self):
+        from ding.util.grammar import BaseGrammar, ParseFail
+        class Foreign(BaseGrammar):
+            def one(self):
+                return self.equal(1)
+
+            def two(self):
+                return self.equal(2)
+
+        with self.assertRaises(ParseFail):
+            self.grammar.foreign(Foreign, 'two')
+        v = self.grammar.foreign(Foreign, 'one')
+        self.assertEqual(1, v)
+
 
