@@ -44,48 +44,83 @@ class ReaderTests(unittest.TestCase):
 
     def test_identifier(self):
         from ding.reader import Reader
+        from ding.term   import IdTerm
         tests = ['id', 'x', 'x1', 'a_variable', '_var']
         for t in tests:
             r = Reader.from_string(t)
-            self.assertEqual(t, r.identifier())
+            self.assertEqual(IdTerm(t), r.identifier())
             r.nothing()
 
     def test_id_tokens(self):
         from ding.reader import Reader
+        from ding.term   import IdTerm
         r = Reader.from_string(' a// abe \nb\n\n c /* gh\n * jklm\n */ d ')
         v = r.many('token', 'identifier')
-        self.assertEqual(['a', 'b', 'c', 'd'], v)
+        self.assertEqual([IdTerm('a'),
+                          IdTerm('b'),
+                          IdTerm('c'),
+                          IdTerm('d')], v)
         r.nothing()
 
     def test_operator_identifiers(self):
         from ding.reader import Reader
+        from ding.term   import IdTerm
         r = Reader.from_string('+ - = ++ / * == += -= := ? : <=>')
-        v = ['+', '-', '=', '++', '/', '*', '==', '+=', '-=',
-                ':=', '?', ':', '<=>']
+        v = [IdTerm('+'),
+             IdTerm('-'),
+             IdTerm('='),
+             IdTerm('++'),
+             IdTerm('/'),
+             IdTerm('*'),
+             IdTerm('=='),
+             IdTerm('+='),
+             IdTerm('-='),
+             IdTerm(':='),
+             IdTerm('?'),
+             IdTerm(':'),
+             IdTerm('<=>')]
         for x in v:
             self.assertEqual(x, r.token('operator_identifier'))
         r.nothing()
 
     def test_compound_term(self):
         from ding.reader import Reader
+        from ding.term   import IdTerm
         r = Reader.from_string('{ a b c d e }')
         v = r.token('compound_term')
         self.assertEqual('{}', v.shape)
-        self.assertEqual(['a','b','c','d','e'], v.terms)
+        self.assertEqual([IdTerm('a'),
+                          IdTerm('b'),
+                          IdTerm('c'),
+                          IdTerm('d'),
+                          IdTerm('e')],
+                         v.terms)
         r.nothing()
 
     def test_comma_term(self):
         from ding.reader import Reader
+        from ding.term   import DelimiterTerm, IdTerm
         r = Reader.from_string('a, b, c')
         v = r.many('token', 'term')
-        self.assertEqual(['a',',','b',',','c'], v)
+        self.assertEqual([IdTerm('a'),
+                          DelimiterTerm(','),
+                          IdTerm('b'),
+                          DelimiterTerm(','),
+                          IdTerm('c')],
+                         v)
         r.nothing()
 
     def test_semicolon_term(self):
         from ding.reader import Reader
+        from ding.term   import DelimiterTerm, IdTerm
         r = Reader.from_string('a ; b ; c')
         v = r.many('token', 'term')
-        self.assertEqual(['a',';','b',';','c'], v)
+        self.assertEqual([IdTerm('a'),
+                          DelimiterTerm(';'),
+                          IdTerm('b'),
+                          DelimiterTerm(';'),
+                          IdTerm('c')],
+                         v)
         r.nothing()
 
 

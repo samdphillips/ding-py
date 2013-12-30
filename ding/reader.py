@@ -2,7 +2,7 @@
 
 import logging
 
-from ding.term         import CompoundTerm
+from ding.term         import CompoundTerm, DelimiterTerm, IdTerm
 from ding.util.grammar import BaseGrammar, ParseFail
 from ding.util.stream  import Stream
 
@@ -87,7 +87,7 @@ class Reader(BaseGrammar):
         self.debug('identifier')
         i = self.id_start_char()
         dentifier = self.many_join('id_char')
-        return i + dentifier
+        return IdTerm(i + dentifier)
 
     def operator_char(self):
         self.debug('operator_char')
@@ -101,7 +101,8 @@ class Reader(BaseGrammar):
 
     def operator_identifier(self):
         self.debug('operator_identifier')
-        return self.many1_join('operator_char')
+        v = self.many1_join('operator_char')
+        return IdTerm(v)
 
     def compound_term_delim(self, start, end):
         self.debug('compound_term_delim', '%s %s', `start`, `end`)
@@ -118,7 +119,8 @@ class Reader(BaseGrammar):
 
     def delimiter_term(self):
         self.debug('delimiter_term')
-        return self.choice(('char', ','), ('char', ';'))
+        v = self.choice(('char', ','), ('char', ';'))
+        return DelimiterTerm(v)
 
     def term(self):
         self.debug('term')
