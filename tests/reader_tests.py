@@ -4,6 +4,8 @@ import unittest
 
 
 class ReaderTests(unittest.TestCase):
+    log_format = "[%(name)15s] [%(levelname)8s] [%(tag)15s] %(stream)s -- %(message)s"
+
     def test_whitespace(self):
         from ding.reader import Reader
         r = Reader.from_string('    ')

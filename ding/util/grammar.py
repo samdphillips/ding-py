@@ -1,5 +1,8 @@
 
 
+import logging
+
+
 class ParseFail(Exception):
     def __init__(self, stream):
         self._stream = stream
@@ -12,22 +15,29 @@ class ParseFail(Exception):
 
 
 class BaseGrammar(object):
-    def __init__(self, stream):
+    def __init__(self, stream, logger=None):
         self.stream = stream
+        self._logger = logger
 
-    def debug(self, tag):
-        if self.stream.is_empty:
-            print tag, '<EMPTY>'
-        else:
-            t = []
-            s = self.stream
-            for i in xrange(10):
-                if s.is_empty:
-                    t.append(' <EMPTY> ')
-                    break
-                t.append(s.first)
-                s = s.rest
-            print tag, `''.join(t)`
+    def is_debug_logging(self):
+        return (self._logger is not None and
+                self._logger.isEnabledFor(logging.DEBUG))
+
+    def debug(self, tag, fmt='', *rest):
+        if self.is_debug_logging():
+            d = {'tag': tag}
+            if self.stream.is_empty:
+                d['stream'] = []
+            else:
+                t = []
+                s = self.stream
+                for i in xrange(10):
+                    if s.is_empty:
+                        break
+                    t.append(s.first)
+                    s = s.rest
+                d['stream'] = t
+            self._logger.debug(fmt, *rest, extra=d)
 
     def anything(self):
         if self.stream.is_empty:
