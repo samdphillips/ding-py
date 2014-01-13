@@ -5,7 +5,7 @@ import unittest
 class IteratorStreamTests(unittest.TestCase):
     def setUp(self):
         from ding.util.stream import Stream
-        self.stream = Stream.from_iterable(xrange(10))
+        self.stream = Stream.from_iterable(range(10))
 
     def test_first(self):
         self.assertEqual(self.stream.first, 0)
@@ -24,7 +24,7 @@ class IteratorStreamTests(unittest.TestCase):
 
     def test_all_read_is_empty(self):
         s = self.stream
-        for n in xrange(10):
+        for n in range(10):
             self.assertEqual(s.first, n)
             s = s.rest
         self.assertTrue(s.is_empty)
@@ -52,26 +52,24 @@ class EmptyStreamTests(unittest.TestCase):
 class IteratorTests(unittest.TestCase):
     def setUp(self):
         from ding.util.stream import Stream
-        self.stream = Stream.from_iterable(xrange(10))
+        self.stream = Stream.from_iterable(range(10))
 
     def test_iterate_over_values(self):
-        from itertools import izip
-        for x,y in izip(self.stream, xrange(10)):
+        for x,y in zip(self.stream, range(10)):
             self.assertEqual(x, y)
         self.assertEqual(self.stream.first, 0)
 
 
 class CharIoIteratorTests(unittest.TestCase):
     def setUp(self):
-        from StringIO import StringIO
+        from io import StringIO
         from ding.util.stream import CharIoIterator
         sio = StringIO('0123456789')
         self.cio_iter = CharIoIterator(sio)
 
     def test_iteration(self):
-        from itertools import izip
         s = '0123456789'
-        for c1, c2 in izip(self.cio_iter, s):
+        for c1, c2 in zip(self.cio_iter, s):
             self.assertEqual(c1, c2)
         
 

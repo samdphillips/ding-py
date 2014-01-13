@@ -11,7 +11,7 @@ class IdTerm(object):
         self.name = name
 
     def __repr__(self):
-        return '<%s %s>' % (self.__class__.__name__, `self.name`)
+        return '<%s %s>' % (self.__class__.__name__, repr(self.name))
 
     def __eq__(self, other):
         return (self.__class__ == other.__class__ and

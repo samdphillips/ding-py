@@ -1,4 +1,6 @@
 .coverage
+.env
 .noseids
 *.pyc
 .*.swp
+.test_failures

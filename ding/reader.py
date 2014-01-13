@@ -27,7 +27,7 @@ class Reader(BaseGrammar):
         return ''.join(v)
 
     def char(self, c):
-        self.debug('char', '%s', `c`)
+        self.debug('char', '%s', repr(c))
         s = self.stream
         v = self.anything()
         if v == c:
@@ -36,14 +36,14 @@ class Reader(BaseGrammar):
             raise ParseFail(s)
 
     def string(self, t):
-        self.debug('string', '%s', `t`)
+        self.debug('string', '%s', repr(t))
         r = []
         for c in t:
             r.append(self.char(c))
         return ''.join(r)
 
     def not_string(self, s):
-        self.debug('not_string', '%s', `s`)
+        self.debug('not_string', '%s', repr(s))
         self.not_parse('string', s)
         return self.anything()
 
@@ -105,7 +105,7 @@ class Reader(BaseGrammar):
         return IdTerm(v)
 
     def compound_term_delim(self, start, end):
-        self.debug('compound_term_delim', '%s %s', `start`, `end`)
+        self.debug('compound_term_delim', '%s %s', repr(start), repr(end))
         self.char(start)
         v = self.many('token', 'term')
         self.char(end)

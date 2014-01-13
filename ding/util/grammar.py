@@ -11,7 +11,7 @@ class ParseFail(Exception):
         if self._stream.is_empty:
             return "Got: <EMPTY>"
         else:
-            return "Got: %s" % `self._stream.first`
+            return "Got: %s" % repr(self._stream.first)
 
 
 class BaseGrammar(object):
@@ -66,7 +66,7 @@ class BaseGrammar(object):
         raise ParseFail(s)
 
     def in_range(self, start_value, end_value):
-        self.debug('in_range', '%s -> %s', `start_value`, `end_value`)
+        self.debug('in_range', '%s -> %s', repr(start_value), repr(end_value))
         s = self.stream
         v = self.anything()
 
